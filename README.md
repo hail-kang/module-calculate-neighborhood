@@ -1,2 +1,2 @@
-# module-calculate-neighborhood
+# Module-calculate-neighborhood
 Calculate and Recommend neighborhood.

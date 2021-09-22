@@ -1,3 +1,10 @@
+from numpy import dot
+from numpy.linalg import norm
+import numpy as np
+
+def cos_sim(A, B):
+    return dot(A, B)/(norm(A)*norm(B))
+
 class Neighborhood:
     def __init__(self, myInfo, proximity, maxPoint):
         self._me = myInfo
@@ -18,14 +25,19 @@ class Neighborhood:
         ANB = A_keys.intersection(B_keys)
         AUB = A_keys.union(B_keys)
 
-        E = 0
-        S = 0
-        for e in ANB:
-            E += self.max
-            S += abs(A[e] - B[e])
-        if E == 0:
-            return 0
-        return (((len(ANB)+len(AUB))/(len(AUB)+len(AUB))) * (1 - S/E))
+        A_vals = [A[e] for e in ANB]
+        B_vals = [B[e] for e in ANB]
+        sim = cos_sim(A_vals, B_vals)
+        return sim
+
+        # E = 0
+        # S = 0
+        # for e in ANB:
+        #     E += self.max
+        #     S += abs(A[e] - B[e])
+        # if E == 0:
+        #     return 0
+        # return (((len(ANB)+len(AUB))/(len(AUB)+len(AUB))) * (1 - S/E))
 
     def setNeighbors(self, users):
         self._S = set()
@@ -48,7 +60,8 @@ class Neighborhood:
                 v = n[1].get(e)
                 if v != None:
                     M += p
-                    D += p*v
+                    # D += p*v
+                    D += v
                     R += 1
             if D/M >= infimum:
                 rL.append({'element' : e, 'probability' : M/R, 'evaluation' : D/M})

@@ -46,7 +46,7 @@ class NeigborhoodTest(unittest.TestCase):
         b = {'k': 1, 't': 2, 'h': 5, 'w': 5, 'g': 1, 'v': 2, 'e': 4, 'p': 5, 'u': 4, 'b': 1, 's': 2, 'o': 5, 'f': 2, 'c': 3, 'l': 5, 'j': 3, 'z': 5, 'a': 4, 'r': 5, 'x': 3, 'd': 1, 'n': 2, 'y': 2, 'q': 2, 'i': 0, 'm': 0}
         
         
-        n = Neighborhood(a, 0.7, 5)
+        n = Neighborhood(a, 0.7)
         n.setNeighbors([b])
         print(n.getNeighbors())
         print(n.recomend(3))
@@ -72,12 +72,16 @@ class NeigborhoodTest(unittest.TestCase):
         print('=====init===')
         print(users[0])
         
-        n = Neighborhood(users[0], 0.7, 5)
+        n = Neighborhood(users[0], 0.7)
         n.setNeighbors(users[1:])
 
-        print('=====nei===')
-        for nei in n.getNeighbors():
-            print(nei)
+        # print('=====nei===')
+        # for nei in n.getNeighbors():
+        #     print(nei)
+
+        with open('users.txt', 'wt') as f:
+            for user in n.getNeighbors():
+                f.write(f'{user}\n')
 
         print('=====anly===')
         for rec in n.recomend(1):

@@ -1,56 +1,53 @@
 from numpy import dot
 from numpy.linalg import norm
 
-class Neighborhood:
-    def __init__(self, myInfo, proximity):
-        self._me = myInfo
-        self._neighbor = [] #(근접도, values) 리스트
-        self.proximity = proximity #neighbor로 추가할 최소 근접도
-        self._S = set() #neighborKeys - mykeys (추천할 elements)
+class Cosine:
+    def __init__(self, info:dict, proximity:float):
+        self.info:dict = info
+        self.elements:set = set(info.keys())
 
-    def getMyInfo(self):
-        return self._me
+        #neighbor로 추가할 최소 근접도
+        self.proximity:float = proximity
 
-    def getNeighbors(self):
-        return self._neighbor
+        #neighborKeys - mykeys (추천할 elements)
+        self.candidate_element:set = set()
 
-    def cosSimilarity(self, A, B):
-        D = (norm(A)*norm(B))
+    def cos_similarity(self, A:list, B:list) -> float:
+        D:float = (norm(A)*norm(B))
         if D == 0:
             return 0
         return dot(A, B)/D
+    
+    def fit(self, neighborhood:dict) -> None:
+        self.candidate_element |= set(neighborhood.keys())
+        self.candidate_element -= self.elements
 
-    def _percent(self, A, B):
-        A_keys = set(A.keys())
-        B_keys = set(B.keys())
-        ANB = A_keys.intersection(B_keys)
+    def predict(self, neighborhoods:list, infimum:float) -> list:
+        recommend_list:list = []
+        element:object
+        for element in self.candidate_element:
+            M:float = 0
+            R:float = 0
 
-        A_vals = [A[e] for e in ANB]
-        B_vals = [B[e] for e in ANB]
+            neighborhood: dict
+            for neighborhood in neighborhoods:
+                neighborhood_elements:set = set(neighborhood.keys())
+                intersection:set = self.elements & neighborhood_elements
 
-        return self.cosSimilarity(A_vals, B_vals)
+                my_vector:list = [self.info[e] for e in intersection]
+                neigborhood_vector:list = [neighborhood[e] for e in intersection]
 
-    def setNeighbors(self, users):
-        self._S = set()
-        mykeys = set(self._me.keys())
-        for u in users:
-            p = self._percent(self._me, u)
-            if p > self.proximity:
-                self._neighbor.append((p, u))
-                self._S = self._S.union(set(u.keys()))
-        self._S = self._S.difference(set(mykeys))
+                p:float = self.cos_similarity(my_vector, neigborhood_vector)
+                v:float = neighborhood.get(element)
 
-    def recomend(self, infimum):
-        rL = []
-        for e in self._S:
-            M = 0 
-            R = 0 
-            for n in self._neighbor:
-                p = n[0]
-                v = n[1].get(e)
                 if v != None and v >= infimum:
                     M += p
                     R += 1
+            
             if R > 0:
-                rL.append({ 'element' : e, 'probability' : M/R })
-        return rL
+                recommend_list.append({ 'element' : element, 'probability' : M/R })
+
+cos = Cosine({'a': 1, 'b': 2, 'c': 3, 'd': 4}, 0.7)
+cos.fit({'a': 2, 'b': 3, 'c': 4, 'd': 5, 'e': 5})
+r = cos.predict([{'a': 2, 'b': 3, 'c': 4, 'd': 5, 'e': 5}], 0.7)
+print(r)

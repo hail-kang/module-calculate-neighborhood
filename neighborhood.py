@@ -1,6 +1,5 @@
 from numpy import dot
 from numpy.linalg import norm
-import numpy as np
 
 class Neighborhood:
     def __init__(self, myInfo, proximity):
@@ -42,10 +41,10 @@ class Neighborhood:
         self._S = self._S.difference(set(mykeys))
 
     def recomend(self, infimum):
-        rL = [] #recomend List
+        rL = []
         for e in self._S:
-            M = 0 #e의 value가 infimum보다 큰 근접도의 합
-            R = 0 #e의 value가 infimum보다 큰 이웃 수
+            M = 0 
+            R = 0 
             for n in self._neighbor:
                 p = n[0]
                 v = n[1].get(e)

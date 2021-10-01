@@ -40,12 +40,14 @@ class Cosine:
                 p:float = self.cos_similarity(my_vector, neigborhood_vector)
                 v:float = neighborhood.get(element)
 
-                if v != None and v >= infimum:
+                if v != None and v >= self.proximity:
                     M += p
                     R += 1
             
-            if R > 0:
+            if R > 0 and M/R >= infimum:
                 recommend_list.append({ 'element' : element, 'probability' : M/R })
+
+        return recommend_list
 
 cos = Cosine({'a': 1, 'b': 2, 'c': 3, 'd': 4}, 0.7)
 cos.fit({'a': 2, 'b': 3, 'c': 4, 'd': 5, 'e': 5})

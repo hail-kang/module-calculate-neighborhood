@@ -1,4 +1,5 @@
 from numpy import dot
+from numpy.lib.function_base import iterable
 from numpy.linalg import norm
 
 class Cosine:
@@ -22,7 +23,7 @@ class Cosine:
         self.candidate_element |= set(neighborhood.keys())
         self.candidate_element -= self.elements
 
-    def predict(self, neighborhoods:list, infimum:float) -> list:
+    def predict(self, neighborhoods:iterable, infimum:float) -> list:
         recommend_list:list = []
         element:object
         for element in self.candidate_element:

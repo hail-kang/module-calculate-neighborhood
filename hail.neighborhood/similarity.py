@@ -3,7 +3,6 @@ import numbers
 
 from numpy import dot
 from numpy.linalg import norm
-from numpy.lib.function_base import iterable
 
 class Similarity(metaclass=abc.ABCMeta):
 

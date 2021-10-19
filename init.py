@@ -1,1 +1,1 @@
-__all__ = ['hail.neighborhood']
+__all__ = ['neighborhood']

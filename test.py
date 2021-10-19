@@ -1,8 +1,10 @@
-from neighborhood import recommend, similarity, neighborhood
+from neighborhood import *
 
-s = similarity.CosineSimilarity({'a': 2, 'b': 1, 'c': 5})
-n = neighborhood.Neighborhood(s, 0.5)
-r = recommend.RatioRecommend(n, 3)
+s = CosineSimilarity({'a': 2, 'b': 1, 'c': 5})
+n = Neighborhood(s, 0.5)
+r = RatioRecommend(n, 3)
 r.add({'a': 2, 'b': 1, 'c': 5, 'd': 4})
-p = r.report(0.7)
+r.add({'a': 3, 'b': 1, 'c': 5, 'd': 4})
+r.add({'a': 2, 'b': 2, 'c': 5, 'd': 3})
+p = r.report(0.5)
 print(p)

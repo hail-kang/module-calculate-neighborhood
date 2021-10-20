@@ -4,11 +4,10 @@ from .neighborhood import Neighborhood
 
 class Recommend(metaclass=abc.ABCMeta):
   
-  def __init__(self, neighborhood, score_standard):
+  def __init__(self, neighborhood):
     if not isinstance(neighborhood, Neighborhood):
       raise Exception('neighborhood must be Neighborhood')
     self.neighborhood = neighborhood
-    self.score_standard = score_standard
 
   def add(self, other):
     self.neighborhood.add(other)
@@ -19,7 +18,7 @@ class Recommend(metaclass=abc.ABCMeta):
 
 class RatioRecommend(Recommend):
 
-  def report(self, ratio_standard):
+  def report(self, score_standard, ratio_standard):
     count = dict()
     report = self.neighborhood.report()
     for data in report:
@@ -31,7 +30,7 @@ class RatioRecommend(Recommend):
           }
 
         count[key]['total_count'] += 1
-        if data['key_value'][key] > self.score_standard:
+        if data['key_value'][key] > score_standard:
           count[key]['effect_count'] += 1
 
     return { key: {**count[key], 'ratio': count[key]['effect_count']/count[key]['total_count']}\

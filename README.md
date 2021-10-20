@@ -13,6 +13,8 @@ pip install numpy
 ```python
 # Cosine유사도를 이용한 코드
 
+from neighborhood import *
+
 s = CosineSimilarity({'a': 2, 'b': 1, 'c': 5})
 n = Neighborhood(s, 0.5)
 r = RatioRecommend(n)

@@ -24,12 +24,16 @@ class Similarity(metaclass=abc.ABCMeta):
   def values(self) -> iter:
     return self.origin.values()
 
+  def report(self, other) -> dict:
+    distance = self.distance(other)
+    substract_keys = self._other_keys - self._origin_keys
+    return {
+      'distance': distance,
+      'key_value': { key: other[key] for key in substract_keys }
+    }
+  
   @abc.abstractclassmethod
   def distance(self):
-    pass
-
-  @abc.abstractclassmethod
-  def report(self):
     pass
 
 class CosineSimilarity(Similarity):
@@ -48,10 +52,5 @@ class CosineSimilarity(Similarity):
       return 0
     return dot(self._origin_values, self._other_values)/d
 
-  def report(self, other) -> dict:
-    distance = self.distance(other)
-    substract_keys = self._other_keys - self._origin_keys
-    return {
-      'distance': distance,
-      'key_value': { key: other[key] for key in substract_keys }
-    }
+  
+

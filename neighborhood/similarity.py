@@ -36,9 +36,12 @@ class CosineSimilarity(Similarity):
     
   def distance(self, other) -> float:
     self._other_keys = set(other.keys())
-    union_keys = self._origin_keys | self._other_keys
-    self._origin_values = [self.origin[key] if key in self._origin_keys else 0 for key in union_keys]
-    self._other_values = [other[key] if key in self._other_keys else 0 for key in union_keys]
+    # union_keys = self._origin_keys | self._other_keys
+    # self._origin_values = [self.origin[key] if key in self._origin_keys else 0 for key in union_keys]
+    # self._other_values = [other[key] if key in self._other_keys else 0 for key in union_keys]
+    intersecton_keys = self._origin_keys & self._other_keys
+    self._origin_values = [self.origin[key] for key in intersecton_keys]
+    self._other_values = [other[key] for key in intersecton_keys]
 
     d = (norm(self._origin_values)*norm(self._other_values))
     if d == 0:

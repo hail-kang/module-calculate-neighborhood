@@ -1,6 +1,7 @@
 import abc
 import numbers
 
+import numpy as np
 from numpy import dot
 from numpy.linalg import norm
 
@@ -53,4 +54,12 @@ class CosineSimilarity(Similarity):
     return dot(self._origin_values, self._other_values)/d
 
   
+class EuclideanSimilarity(Similarity):
 
+  def distance(self, other) -> float:
+    self._other_keys = set(other.keys())
+    intersecton_keys = self._origin_keys & self._other_keys
+    self._origin_values = np.array([self.origin[key] for key in intersecton_keys])
+    self._other_values = np.array([other[key] for key in intersecton_keys])
+
+    return norm(self._origin_values + self._other_values)

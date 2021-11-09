@@ -50,8 +50,8 @@ class CosineSimilarity(Similarity):
 
     d = (norm(self._origin_values)*norm(self._other_values))
     if d == 0:
-      return 0
-    return dot(self._origin_values, self._other_values)/d
+      return 1
+    return 1 - dot(self._origin_values, self._other_values)/d
 
   
 class EuclideanSimilarity(Similarity):

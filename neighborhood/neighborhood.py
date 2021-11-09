@@ -11,7 +11,7 @@ class Neighborhood:
 
   def add(self, other):
     report = self.similarity.report(other)
-    if report['distance'] > self.threshold:
+    if report['distance'] < self.threshold:
       self.neighborhoods.append(report)
 
   def report(self):
